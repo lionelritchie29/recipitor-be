@@ -12,14 +12,20 @@ func main() {
 	godotenv.Load()
 	router := gin.Default()
 	port := os.Getenv("APP_PORT")
-	
-	router.GET("/ping", func (c *gin.Context) {
-		c.JSON(200, gin.H {
-			"message": "pong",
-		})
-	})
 
-	routes.ItemRoutes(router)
+	apiRoute := router.Group("api")
+	{
+		apiRoute.GET("/ping", func (c *gin.Context) {
+			c.JSON(200, gin.H {
+				"message": "pong",
+			})
+		})
+
+		routes.ItemRoutes(apiRoute)
+	}
+	
+	
+
 	
 	router.Run(port)
 }

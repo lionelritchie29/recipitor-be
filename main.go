@@ -1,19 +1,25 @@
 package main
 
 import (
-	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"github.com/lionelritchie29/recipitor-be/routes"
 )
 
 func main() {
-	r := gin.Default()
+	godotenv.Load()
+	router := gin.Default()
+	port := os.Getenv("APP_PORT")
 	
-	r.GET("/ping", func (c *gin.Context) {
+	router.GET("/ping", func (c *gin.Context) {
 		c.JSON(200, gin.H {
 			"message": "pong",
 		})
 	})
+
+	routes.ItemRoutes(router)
 	
-	http.ListenAndServe(":3333", r)
+	router.Run(port)
 }

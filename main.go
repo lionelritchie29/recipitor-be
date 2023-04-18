@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/lionelritchie29/recipitor-be/database"
+	"github.com/lionelritchie29/recipitor-be/models"
 	"github.com/lionelritchie29/recipitor-be/routes"
 )
 
@@ -26,12 +27,13 @@ func main() {
 }
 
 func initDb() {
-  db, err := database.Init()
+  db, err := database.GetConnection()
 
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
+	db.AutoMigrate(models.Item{})
 	database.Seed(db)
 }

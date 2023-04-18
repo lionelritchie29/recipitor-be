@@ -1,14 +1,13 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/lionelritchie29/recipitor-be/controllers"
+)
 
 func ItemRoutes(routerGroup *gin.RouterGroup) {
 	itemRoutes := routerGroup.Group("items") 
 	{
-		itemRoutes.GET("/", func (c *gin.Context) {
-			c.JSON(200, gin.H {
-				"message": "get items",
-			})
-		})
+		itemRoutes.GET("/", controllers.Item{}.GetItems())
 	}
 }

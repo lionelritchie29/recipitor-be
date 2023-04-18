@@ -12,5 +12,6 @@ func ItemRoutes(routerGroup *gin.RouterGroup) {
 		itemRoutes.GET("/:id", controllers.Item{}.GetItem())
 		itemRoutes.POST("/", controllers.Item{}.AddItem())
 		itemRoutes.PUT("/:id", controllers.Item{}.UpdateItem())
+		itemRoutes.DELETE("/:id", controllers.Item{}.DeleteItem())
 	}
 }

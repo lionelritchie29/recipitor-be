@@ -121,3 +121,30 @@ func (item Item) UpdateItem() gin.HandlerFunc {
 		})
 	}
 }
+
+func (item Item) DeleteItem() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db, _ := database.GetConnection()
+		id := c.Param("id")
+		
+		var item models.Item
+		result := db.First(&item, id)
+
+		if result.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Item not exist",
+				"data": nil,
+				"success": false,
+			})
+			return
+		}
+
+		db.Delete(&item)
+
+		c.JSON(201, gin.H{
+			"message": "delete item",
+			"data": item,
+			"success": true,
+		})
+	}
+}

@@ -11,7 +11,7 @@ import (
 
 type Item struct {}
 
-func (c Item) GetItems() gin.HandlerFunc {
+func (item Item) GetItems() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db, _ := database.GetConnection()
 		var items []models.Item
@@ -26,7 +26,7 @@ func (c Item) GetItems() gin.HandlerFunc {
 	}
 }
 
-func (c Item) GetItem() gin.HandlerFunc {
+func (item Item) GetItem() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
 		db, _ := database.GetConnection()
@@ -42,7 +42,7 @@ func (c Item) GetItem() gin.HandlerFunc {
 	}
 }
 
-func (c Item) AddItem() gin.HandlerFunc {
+func (item Item) AddItem() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db, _ := database.GetConnection()
 		

@@ -71,3 +71,53 @@ func (item Item) AddItem() gin.HandlerFunc {
 		})
 	}
 }
+
+func (item Item) UpdateItem() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db, _ := database.GetConnection()
+		id := c.Param("id")
+		
+		var payload dto.UpdateItemDto
+		var item models.Item
+
+		if err := c.ShouldBindJSON(&payload); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+				"data": nil,
+				"success": false,
+			})
+			return
+		}
+
+		result := db.First(&item, id)
+
+		if result.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Item not exist",
+				"data": nil,
+				"success": false,
+			})
+			return
+		}
+
+		if (payload.Name != "") {
+			item.Name = payload.Name
+		}
+
+		if (payload.Description != "") {
+			item.Description = payload.Description
+		}
+
+		if (payload.Image != "") {
+			item.Image = payload.Image
+		}
+
+		db.Save(&item)
+
+		c.JSON(201, gin.H{
+			"message": "update new item",
+			"data": item,
+			"success": true,
+		})
+	}
+}

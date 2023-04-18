@@ -6,10 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/lionelritchie29/recipitor-be/models"
+	"github.com/lionelritchie29/recipitor-be/database"
 	"github.com/lionelritchie29/recipitor-be/routes"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 )
 
 func main() {
@@ -28,13 +26,12 @@ func main() {
 }
 
 func initDb() {
-	dsn := os.Getenv("CONNECTION_STRING")
-  db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+  db, err := database.Init()
 
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	db.AutoMigrate(&models.Item{})
+	database.Seed(db)
 }

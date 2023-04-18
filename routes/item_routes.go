@@ -9,5 +9,7 @@ func ItemRoutes(routerGroup *gin.RouterGroup) {
 	itemRoutes := routerGroup.Group("items") 
 	{
 		itemRoutes.GET("/", controllers.Item{}.GetItems())
+		itemRoutes.GET("/:id", controllers.Item{}.GetItem())
+		itemRoutes.POST("/", controllers.Item{}.AddItem())
 	}
 }

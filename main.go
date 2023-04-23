@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/lionelritchie29/recipitor-be/database"
@@ -16,6 +17,10 @@ func main() {
 	initDb()
 	router := gin.Default()
 	port := os.Getenv("APP_PORT")
+
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+	}))
 
 	apiRoute := router.Group("api")
 	{

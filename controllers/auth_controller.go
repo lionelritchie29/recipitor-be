@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/lionelritchie29/recipitor-be/database"
 	"github.com/lionelritchie29/recipitor-be/models"
 	"github.com/lionelritchie29/recipitor-be/models/dto"
@@ -51,5 +53,57 @@ func (auth Auth) Register() gin.HandlerFunc {
 			"data": user,
 			"success": true,
 		})
+	}
+}
+
+func (auth Auth) Login() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db, _ := database.GetConnection()
+
+		var payload dto.LoginDto
+
+		if err := c.ShouldBindJSON(&payload); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+				"data": nil,
+				"success": false,
+			})
+			return
+		}
+		
+		var user models.User
+		existUser := db.Where("email", payload.Email).First(&user)
+
+		if (existUser.RowsAffected == 0 ){
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "user does not exists",
+				"data": nil,
+				"success": false,
+			})
+			return
+		}
+
+		hashMatchErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password))
+		if hashMatchErr != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Wrong password",
+				"data": nil,
+				"success": false,
+			})
+			return
+		}
+
+		key := os.Getenv("JWT_kEY")
+		t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"sub": user.ID,
+			"email": user.Email,
+		})
+		token, _ := t.SignedString([]byte(key))
+
+		c.JSON(200, gin.H {
+			"message": "Login success!",
+			"data": token,
+			"success": true,
+		})		
 	}
 }

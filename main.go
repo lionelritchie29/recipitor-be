@@ -42,5 +42,6 @@ func initDb() {
 
 	db.AutoMigrate(models.Item{})
 	db.AutoMigrate(models.User{})
+	db.AutoMigrate(models.UserItem{})
 	database.Seed(db)
 }

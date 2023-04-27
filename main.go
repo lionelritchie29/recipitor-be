@@ -27,6 +27,7 @@ func main() {
 		routes.TestRoutes(apiRoute)
 		routes.ItemRoutes(apiRoute)
 		routes.AuthRoutes(apiRoute)
+		routes.UserListRoutes(apiRoute)
 	}
 	
 	router.Run(port)
@@ -42,6 +43,6 @@ func initDb() {
 
 	db.AutoMigrate(models.Item{})
 	db.AutoMigrate(models.User{})
-	db.AutoMigrate(models.UserItem{})
+	db.AutoMigrate(models.List{})
 	database.Seed(db)
 }

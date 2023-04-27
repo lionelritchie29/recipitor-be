@@ -4,7 +4,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserItem struct {
+type List struct {
 	gorm.Model
 
 	ItemId int

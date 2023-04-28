@@ -18,9 +18,7 @@ func main() {
 	router := gin.Default()
 	port := os.Getenv("APP_PORT")
 
-	router.Use(cors.New(cors.Config{
-		AllowAllOrigins: true,
-	}))
+	router.Use(cors.Default())
 
 	apiRoute := router.Group("api")
 	{

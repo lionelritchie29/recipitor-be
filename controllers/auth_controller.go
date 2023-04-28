@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +20,7 @@ func (auth Auth) Register() gin.HandlerFunc {
 		var payload dto.RegisterDto
 
 		if err := c.ShouldBindJSON(&payload); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(200, gin.H{
 				"message": err.Error(),
 				"data": nil,
 				"success": false,
@@ -63,7 +62,7 @@ func (auth Auth) Login() gin.HandlerFunc {
 		var payload dto.LoginDto
 
 		if err := c.ShouldBindJSON(&payload); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(200, gin.H{
 				"message": err.Error(),
 				"data": nil,
 				"success": false,
@@ -75,7 +74,7 @@ func (auth Auth) Login() gin.HandlerFunc {
 		existUser := db.Where("email", payload.Email).First(&user)
 
 		if (existUser.RowsAffected == 0 ){
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(200, gin.H{
 				"message": "user does not exists",
 				"data": nil,
 				"success": false,
@@ -85,7 +84,7 @@ func (auth Auth) Login() gin.HandlerFunc {
 
 		hashMatchErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password))
 		if hashMatchErr != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(200, gin.H{
 				"message": "Wrong password",
 				"data": nil,
 				"success": false,

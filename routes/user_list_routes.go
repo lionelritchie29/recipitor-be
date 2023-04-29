@@ -9,5 +9,6 @@ func UserListRoutes(routerGroup *gin.RouterGroup) {
 	userListRoutes := routerGroup.Group("users/:userId/lists") 
 	{
 		userListRoutes.POST("", controllers.UserList{}.Add())
+		userListRoutes.GET("", controllers.UserList{}.GetByUser())
 	}
 }

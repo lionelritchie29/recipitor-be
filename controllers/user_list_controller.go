@@ -17,7 +17,7 @@ func (userList UserList) Add() gin.HandlerFunc {
 		db, _ := database.GetConnection()
 		userIdStr := c.Param("userId")
 
-		var payload dto.CreateUserItemDto
+		var payload dto.CreateUserListDto
 
 		if err := c.ShouldBindJSON(&payload); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
@@ -30,13 +30,22 @@ func (userList UserList) Add() gin.HandlerFunc {
 
 		userId, _ := strconv.Atoi(userIdStr)
 		list := models.List {
-			ItemId: payload.ItemId,
+			Description: payload.Description,
 			UserId: userId,
-			Amount: payload.Amount,
-			Quantity: payload.Quantity,
 		}
 
 		db.Create(&list)
+
+		for _, item := range payload.Items {
+			list := models.ListItem {
+				ItemId: item.Id,
+				Amount: item.Amount,
+				Quantity: item.Quantity,
+				ListId: list.ID,
+			}
+	
+			db.Create(&list)
+		}
 
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Add new list",

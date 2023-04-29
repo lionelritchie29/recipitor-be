@@ -1,18 +1,9 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
 type List struct {
 	gorm.Model
-
-	ItemId int
-	Item Item
-	
+	Description string
 	UserId int
-	User User
-	
-	Amount string
-	Quantity int
 }

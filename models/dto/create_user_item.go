@@ -1,7 +1,12 @@
 package dto
 
-type CreateUserItemDto struct {
-	ItemId   int    `form:"itemId" json:"itemId" binding:"required"`
+type CreateUserListDto struct {
+	Description string `form:"description" json:"description" binding:"required"`
+	Items []ListItemDto `form:"items" json:"items" binding:"required"`
+}
+
+type ListItemDto struct {
+	Id   uint    `form:"id" json:"id" binding:"required"`
 	Amount   string `form:"amount" json:"amount" binding:"required"`
-	Quantity int    `form:"quantity" json:"quantity" binding:"required"`
+	Quantity int    `form:"quantity" json:"quantity" binding:"required"`	
 }

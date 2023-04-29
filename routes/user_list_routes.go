@@ -6,7 +6,7 @@ import (
 )
 
 func UserListRoutes(routerGroup *gin.RouterGroup) {
-	userListRoutes := routerGroup.Group("user/:userId/items") 
+	userListRoutes := routerGroup.Group("users/:userId/lists") 
 	{
 		userListRoutes.POST("", controllers.UserList{}.Add())
 	}

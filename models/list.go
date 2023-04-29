@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 type List struct {
 	gorm.Model
-	Description string
+	Name string
 	UserId int
 }

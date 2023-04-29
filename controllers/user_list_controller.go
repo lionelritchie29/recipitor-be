@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +19,7 @@ func (userList UserList) Add() gin.HandlerFunc {
 		var payload dto.CreateUserListDto
 
 		if err := c.ShouldBindJSON(&payload); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
+			c.JSON(200, gin.H{
 				"message": err.Error(),
 				"data": nil,
 				"success": false,
@@ -30,7 +29,7 @@ func (userList UserList) Add() gin.HandlerFunc {
 
 		userId, _ := strconv.Atoi(userIdStr)
 		list := models.List {
-			Description: payload.Description,
+			Name: payload.Name,
 			UserId: userId,
 		}
 
@@ -47,7 +46,7 @@ func (userList UserList) Add() gin.HandlerFunc {
 			db.Create(&list)
 		}
 
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(200, gin.H{
 			"message": "Add new list",
 			"data": list,
 			"success": true,

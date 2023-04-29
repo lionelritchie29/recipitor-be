@@ -1,7 +1,7 @@
 package dto
 
 type CreateUserListDto struct {
-	Description string `form:"description" json:"description" binding:"required"`
+	Name string `form:"name" json:"name" binding:"required"`
 	Items []ListItemDto `form:"items" json:"items" binding:"required"`
 }
 
